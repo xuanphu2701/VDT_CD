@@ -22,33 +22,29 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and push phutx_python_image Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
-          context: .
-          dockerfile: roles/api/files/
+          context: roles/api/files/
           push: true
           tags: xuanphu270101/phutx_python_image:latest
 
       - name: Build and push phutx_mongo_image Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
-          context: .
-          dockerfile: roles/db/files/
+          context: roles/db/files/
           push: true
           tags: xuanphu270101/phutx_mongo_image:latest
 
       - name: Build and push phutx_nginx_image Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
-          context: .
-          dockerfile: roles/web/files/
+          context: roles/web/files/
           push: true
           tags: xuanphu270101/phutx_nginx_image:latest
 
       - name: Build and push phutx_nginxlb_image Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
-          context: .
-          dockerfile: roles/lb/files/
+          context: roles/lb/files/
           push: true
           tags: xuanphu270101/phutx_nginxlb_image:latest
