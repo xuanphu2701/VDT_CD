@@ -18,7 +18,6 @@
       SERVICE_NAME: "webserver"
     ports:
       - "{{ port_1 }}:{{ port_1 }}"
-      - "{{ port_2 }}:{{ port_2 }}"
     volumes:
       - "{{ nginx1_volumes }}"
     networks:
@@ -37,7 +36,6 @@
       SERVICE_NAME: "webserver"
     ports:
       - "{{ port_nginx2_1 }}:{{ port_1 }}"
-      - "{{ port_nginx2_2 }}:{{ port_2 }}"
     volumes:
       - "{{ nginx2_volumes }}"
     networks:
