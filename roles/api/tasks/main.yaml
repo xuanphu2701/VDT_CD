@@ -1,0 +1,40 @@
+- name: Build Python Image
+  docker_image:
+    name: "{{ python_image }}"
+    build:
+      path: roles/api/files
+    source: build
+    state: present
+
+
+- name: Start Flask1 container
+  become: true
+  docker_container:
+    name: "{{ flask1_container_name }}"
+    image: "{{ python_image }}"
+    restart_policy: unless-stopped
+    env:
+      APP_ENV: "prod"
+      APP_DEBUG: "False"
+      APP_PORT: "{{ flask_port }}"
+    volumes:
+      - "{{ flask1_volumes }}"
+    networks:
+      - name: frontend
+      - name: backend
+
+- name: Start Flask2 container
+  become: true
+  docker_container:
+    name: "{{ flask2_container_name }}"
+    image: "{{ python_image }}"
+    restart_policy: unless-stopped
+    env:
+      APP_ENV: "prod"
+      APP_DEBUG: "False"
+      APP_PORT: "{{ flask_port }}"
+    volumes:
+      - "{{ flask2_volumes }}"
+    networks:
+      - name: frontend
+      - name: backend

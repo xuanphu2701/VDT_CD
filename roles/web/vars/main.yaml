@@ -1,0 +1,10 @@
+nginx_image: phutx_nginx_image:1.0
+nginx1_container_name: phutx_webserver1
+nginx2_container_name: phutx_webserver2
+port_1: 81
+port_2: 443
+port_nginx2_1: 82
+port_nginx2_2: 444
+nginx1_volumes: "nginxdata1:/var/log/nginx"
+nginx2_volumes: "nginxdata2:/var/log/nginx"
+#file_path: roles/web/files__

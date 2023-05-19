@@ -1,0 +1,91 @@
+- name: Install aptitude
+  apt:
+    name: aptitude
+    state: latest
+    update_cache: "{{ update_cache }}"
+
+- name: Install required system packages
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+    state: latest
+    update_cache: "{{ update_cache }}"
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Update apt and install docker-ce
+  apt:
+    name: docker-ce
+    state: latest
+    update_cache: "{{ update_cache }}"
+
+- name: Install Docker Module for Python
+  pip:
+    name: docker
+
+- name: Download Docker Compose binary
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x'
+
+
+- name: Create frontend network
+  docker_network:
+    name: frontend
+    driver: bridge
+
+- name: Create backend network
+  docker_network:
+    name: backend
+    driver: bridge
+
+- name: Create appdata1 volume
+  docker_volume:
+    name: appdata1
+    driver: local
+
+- name: Create appdata2 volume
+  docker_volume:
+    name: appdata2
+    driver: local
+
+- name: Create nginxdata1 volume
+  docker_volume:
+    name: nginxdata1
+    driver: local
+
+- name: Create nginxdata2 volume
+  docker_volume:
+    name: nginxdata2
+    driver: local
+
+- name: Create nginxlbdata volume
+  docker_volume:
+    name: nginxlbdata
+    driver: local
+
+- name: Create dbdata volume
+  docker_volume:
+    name: dbdata
+    driver: local
+
+- name: Copy data to dbdata volume
+  copy:
+    src: roles/db/files/init-db.js
+    dest: /var/lib/docker/volumes/dbdata/_data
+    remote_src: true

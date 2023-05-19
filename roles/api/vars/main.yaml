@@ -1,0 +1,8 @@
+flask_port: "5000"
+python_image: phutx_python_image:1.0
+flask1_container_name: phutx_flask1
+flask2_container_name: phutx_flask2
+flask1_volumes: "appdata1:/var/www"
+flask2_volumes: "appdata2:/var/www"
+
+#file_path: roles/api/files__

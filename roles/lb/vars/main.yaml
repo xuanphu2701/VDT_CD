@@ -1,0 +1,4 @@
+nginxlb_image: phutx_nginxlb_image:1.0
+nginxlb_container_name: phutx_lb
+port_1: 80
+nginxlb_volumes: "nginxlbdata:/var/log/nginx"

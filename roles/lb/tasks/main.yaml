@@ -1,0 +1,26 @@
+- name: Build Nginxlb Image
+  docker_image:
+    name: "{{ nginxlb_image }}"
+    source: build
+    build:
+      path: roles/lb/files
+
+- name: Start Nginxlb Container
+  become: true
+  docker_container:
+    name: "{{ nginxlb_container_name }}"
+    image: "{{ nginxlb_image }}"
+    restart_policy: unless-stopped
+    env:
+      APP_ENV: "prod"
+      APP_NAME: "webserver"
+      APP_DEBUG: "true"
+      SERVICE_NAME: "webserver"
+    ports:
+      - "{{ port_1 }}:{{ port_1 }}"
+    volumes:
+      - "{{ nginxlb_volumes }}"
+    networks:
+      - name: frontend
+
+
