@@ -6,7 +6,6 @@ on:
       - 'v*.*.*'
 
 jobs:
-  job_name: Build and push
   runs-on: ubuntu-latest
 
   steps:
