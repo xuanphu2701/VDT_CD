@@ -6,6 +6,13 @@
   roles:
     - common
 
+#- name: Deploy Logging Services
+#  hosts: all
+#  become: true
+##      gather_facts: false
+#  roles:
+#    - logging
+
 - name: Build Image and Run db container
   hosts: all
   become: true
@@ -39,3 +46,4 @@
 #  become: true
 #  roles:
 #    - monitor
+

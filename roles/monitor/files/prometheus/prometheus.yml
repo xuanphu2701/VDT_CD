@@ -5,7 +5,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'phutx_prom'
+      username: 'tranxuanphu2001'
 
 alerting:
   alertmanagers:
@@ -23,7 +23,7 @@ rule_files:
 #  - url: http://localhost:9090/api/v1/read
 
 remote_write:
-  - url: http://171.236.38.100:9090/api/v1/write
+  - url:  http://27.66.108.93:9090/api/v1/write
 
 
 # A scrape configuration containing exactly one endpoint to scrape.

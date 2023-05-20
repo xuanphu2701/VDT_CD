@@ -1,0 +1,15 @@
+- name: Build Fluentd Image
+  docker_image:
+    name: "{{ fluentd_image }}"
+    build:
+      path: roles/logging/files/fluentd/
+    source: build
+    state: present
+
+- name: Start Fluentd container
+  docker_container:
+    name: phutx_fluentd
+    image: "{{ fluentd_image }}"
+    volumes:
+      - ../files/fluentd/conf:/fluentd/etc
+    network_mode: host

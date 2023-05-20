@@ -8,6 +8,28 @@
     name: grafana_data
     state: present
 
+- name: Create Prometheus file volume
+  docker_volume:
+    name: prometheus_file
+    state: present
+
+- name: Copy data to prometheus_file volume
+  copy:
+    src: roles/monitor/files/prometheus/
+    dest: /var/lib/docker/volumes/prometheus_file/_data
+    remote_src: true
+
+- name: Create AlertManager file volume
+  docker_volume:
+    name: alertmanager_file
+    state: present
+
+- name: Copy data to alertmanager_file volume
+  copy:
+    src: roles/monitor/files/alertmanager/
+    dest: /var/lib/docker/volumes/alertmanager_file/_data
+    remote_src: true
+
 - name: Start Prometheus container
   docker_container:
     name: phutx_prometheus
@@ -22,7 +44,7 @@
       - "--web.enable-lifecycle"
       - "--web.listen-address=:9090"
     volumes:
-      - "{{ absolute_path }}roles/monitor/files/prometheus/:/etc/prometheus/"
+      - "prometheus_file:/etc/prometheus/"
       - "prometheus_data:/prometheus"
     restart_policy: unless-stopped
     network_mode: host
@@ -36,7 +58,7 @@
     name: phutx_alertmanager
     image: prom/alertmanager:{{ alertmanager_version }}
     volumes:
-      - "{{ absolute_path }}roles/monitor/files/alertmanager/:/etc/alertmanager/"
+      - "alertmanager_file:/etc/alertmanager/"
     command:
       - "--config.file=/etc/alertmanager/config.yml"
       - "--storage.path=/alertmanager"
@@ -90,16 +112,16 @@
     labels:
       org.label-schema.group: "monitoring"
 
-- name: Start Grafana container
-  docker_container:
-    name: phutx_grafana
-    image: grafana/grafana:{{ grafana_version }}
-    volumes:
-      - "grafana_data:/var/lib/grafana"
-      - "{{ absolute_path }}roles/monitor/files/grafana/provisioning:/etc/grafana/provisioning"
-    restart_policy: unless-stopped
-    network_mode: host
-    env:
-      TZ: "Asia/Ho_Chi_Minh"
-    labels:
-      org.label-schema.group: "monitoring"
+#- name: Start Grafana container
+#  docker_container:
+#    name: phutx_grafana
+#    image: grafana/grafana:{{ grafana_version }}
+#    volumes:
+#      - "grafana_data:/var/lib/grafana"
+#      - "{{ absolute_path }}roles/monitor/files/grafana/provisioning:/etc/grafana/provisioning"
+#    restart_policy: unless-stopped
+#    network_mode: host
+#    env:
+#      TZ: "Asia/Ho_Chi_Minh"
+#    labels:
+#      org.label-schema.group: "monitoring"
